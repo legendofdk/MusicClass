@@ -30,6 +30,119 @@ body {
     color: var(--text);
 }
 
+.scroll-music-lane {
+    position: fixed;
+    top: 5.5rem;
+    right: 0.65rem;
+    width: 3.5rem;
+    height: calc(100vh - 7rem);
+    z-index: 55;
+    pointer-events: none;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.scroll-music-toggle {
+    position: fixed;
+    right: 5rem;
+    bottom: 1.1rem;
+    z-index: 65;
+    padding: 0.8rem 1.05rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    background: rgba(12, 12, 12, 0.88);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.28);
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.scroll-music-toggle:hover {
+    transform: translateY(-2px);
+}
+
+.scroll-music-toggle.is-ready {
+    background: linear-gradient(135deg, rgba(214, 176, 122, 0.94), rgba(184, 139, 86, 0.92));
+    border-color: rgba(255, 236, 210, 0.55);
+    color: #18140f;
+}
+
+.scroll-music-rail,
+.scroll-music-glow,
+.scroll-music-progress,
+.scroll-music-notes {
+    position: absolute;
+}
+
+.scroll-music-rail {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 0.4rem;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(214, 176, 122, 0.2));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.scroll-music-glow {
+    inset: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: radial-gradient(circle at center, rgba(214, 176, 122, 0.22), transparent 65%);
+    opacity: 0.35;
+    filter: blur(14px);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.scroll-music-progress {
+    left: 50%;
+    bottom: 0;
+    width: 0.4rem;
+    height: 8%;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255, 245, 230, 0.95), rgba(214, 176, 122, 0.65));
+    box-shadow: 0 0 20px rgba(214, 176, 122, 0.45);
+}
+
+.scroll-music-notes {
+    inset: 0;
+    overflow: hidden;
+}
+
+.scroll-music-note {
+    position: absolute;
+    right: 1.2rem;
+    color: rgba(255, 243, 225, 0.92);
+    font-family: "Noto Serif Display", serif;
+    font-size: 1.2rem;
+    text-shadow: 0 0 18px rgba(214, 176, 122, 0.45);
+    transform: translate3d(0, 0, 0) scale(var(--note-scale, 1)) rotate(var(--note-rotation, 0deg));
+    animation: scroll-note-rise 1.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.scroll-music-lane.is-active .scroll-music-glow {
+    opacity: 0.72;
+    transform: scaleX(1.08);
+}
+
+@keyframes scroll-note-rise {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(0.72) rotate(0deg);
+    }
+    18% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--note-drift, -18px), -52px, 0) scale(var(--note-scale, 1)) rotate(var(--note-rotation, 0deg));
+    }
+}
+
 a {
     color: inherit;
     text-decoration: none;
@@ -317,6 +430,24 @@ textarea {
 
 .section-soft {
     background: rgba(255, 255, 255, 0.02);
+}
+
+@media (max-width: 900px) {
+    .scroll-music-lane {
+        right: 0.35rem;
+        width: 2.8rem;
+    }
+
+    .scroll-music-note {
+        right: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .scroll-music-toggle {
+        right: 1rem;
+        bottom: 5.4rem;
+        max-width: calc(100vw - 4rem);
+    }
 }
 
 .split-section,

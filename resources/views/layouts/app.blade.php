@@ -13,6 +13,17 @@
 <body>
     @include('partials.nav')
 
+    <aside class="scroll-music-lane" aria-hidden="true" data-scroll-music-lane>
+        <div class="scroll-music-rail"></div>
+        <div class="scroll-music-glow"></div>
+        <div class="scroll-music-progress" data-scroll-music-progress></div>
+        <div class="scroll-music-notes" data-scroll-music-notes></div>
+    </aside>
+
+    <button class="scroll-music-toggle" type="button" data-scroll-music-toggle>
+        Bật âm thanh scroll
+    </button>
+
     <main>
         @yield('content')
     </main>
