@@ -38,14 +38,13 @@ if (demoForm) {
 if (scrollMusicLane && scrollMusicProgress && scrollMusicNotes) {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     const noteSteps = [0, 2, 4, 7, 9, 12, 14, 16];
-    const scrollMusicStorageKey = 'scroll-music-enabled';
     let audioContext = null;
     let masterGainNode = null;
     let lastTriggerAt = 0;
     let lastScrollY = window.scrollY;
     let noteIndex = 0;
     let audioReady = false;
-    let soundEnabled = window.localStorage.getItem(scrollMusicStorageKey) === 'true';
+    let soundEnabled = false;
 
     const ensureAudioContext = async () => {
         if (!AudioContextClass) {
@@ -205,8 +204,8 @@ if (scrollMusicLane && scrollMusicProgress && scrollMusicNotes) {
             lastTriggerAt = now;
             if (audioReady && soundEnabled) {
                 playPianoNote(velocity, direction);
+                spawnVisualNote(progressRatio, velocity, direction);
             }
-            spawnVisualNote(progressRatio, velocity, direction);
             scrollMusicLane.classList.remove('is-active');
             window.requestAnimationFrame(() => {
                 scrollMusicLane.classList.add('is-active');
@@ -229,7 +228,6 @@ if (scrollMusicLane && scrollMusicProgress && scrollMusicNotes) {
     if (scrollMusicToggle) {
         scrollMusicToggle.addEventListener('click', async () => {
             soundEnabled = !soundEnabled;
-            window.localStorage.setItem(scrollMusicStorageKey, String(soundEnabled));
 
             if (soundEnabled) {
                 await ensureAudioContext();
