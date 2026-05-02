@@ -61,30 +61,7 @@ body {
 }
 
 .scroll-music-toggle {
-    position: fixed;
-    right: 5rem;
-    bottom: 1.1rem;
-    z-index: 65;
-    padding: 0.8rem 1.05rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 999px;
-    background: rgba(12, 12, 12, 0.88);
-    color: var(--text);
-    font: inherit;
-    font-size: 0.9rem;
-    cursor: pointer;
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.28);
-    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
-}
-
-.scroll-music-toggle:hover {
-    transform: translateY(-2px);
-}
-
-.scroll-music-toggle.is-ready {
-    background: linear-gradient(135deg, rgba(214, 176, 122, 0.94), rgba(184, 139, 86, 0.92));
-    border-color: rgba(255, 236, 210, 0.55);
-    color: #18140f;
+    display: none;
 }
 
 .scroll-music-rail,
@@ -424,11 +401,6 @@ textarea {
         font-size: 1rem;
     }
 
-    .scroll-music-toggle {
-        right: 1rem;
-        bottom: 5.4rem;
-        max-width: calc(100vw - 4rem);
-    }
 }
 
 .split-section,

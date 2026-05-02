@@ -171,6 +171,16 @@ if (scrollMusicLane && scrollMusicProgress && scrollMusicNotes) {
         }
     };
 
+    const enableScrollMusic = async () => {
+        if (soundEnabled) {
+            return;
+        }
+
+        soundEnabled = true;
+        await ensureAudioContext();
+        updateAudioState();
+    };
+
     const spawnVisualNote = (progressRatio, velocity, direction) => {
         const note = document.createElement('span');
         const symbols = direction > 0 ? ['♪', '♩', '♫'] : ['♬', '♪', '♩'];
@@ -225,25 +235,29 @@ if (scrollMusicLane && scrollMusicProgress && scrollMusicNotes) {
         window.removeEventListener('wheel', unlockAudio);
     };
 
+    const autoEnableOnScrollIntent = async () => {
+        await enableScrollMusic();
+        window.removeEventListener('wheel', autoEnableOnScrollIntent);
+        window.removeEventListener('touchmove', autoEnableOnScrollIntent);
+    };
+
     if (scrollMusicToggle) {
         scrollMusicToggle.addEventListener('click', async () => {
-            soundEnabled = !soundEnabled;
-
-            if (soundEnabled) {
-                await ensureAudioContext();
+            if (!soundEnabled) {
+                await enableScrollMusic();
 
                 if (audioReady) {
                     playPianoNote(180, 1);
                     spawnVisualNote(window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight), 180, 1);
                 }
             } else if (masterGainNode && audioContext) {
+                soundEnabled = false;
                 const now = audioContext.currentTime;
                 masterGainNode.gain.cancelScheduledValues(now);
                 masterGainNode.gain.setValueAtTime(masterGainNode.gain.value, now);
                 masterGainNode.gain.linearRampToValueAtTime(0, now + 0.05);
+                updateAudioState();
             }
-
-            updateAudioState();
         });
     }
 
@@ -255,4 +269,6 @@ if (scrollMusicLane && scrollMusicProgress && scrollMusicNotes) {
     window.addEventListener('keydown', unlockAudio);
     window.addEventListener('touchstart', unlockAudio, { passive: true });
     window.addEventListener('wheel', unlockAudio, { passive: true });
+    window.addEventListener('wheel', autoEnableOnScrollIntent, { passive: true });
+    window.addEventListener('touchmove', autoEnableOnScrollIntent, { passive: true });
 }
